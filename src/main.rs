@@ -12,8 +12,15 @@ fn main() {
     
     for stream in listener.incoming() {
         match stream {
-            Ok(mut stream) => {
+            Ok(_stream) => {
+            Ok(mut stream) => { 
+                println!("accepted new connection");
+                // Wait for the client to send us a message but ignore the content for now
+                let mut buf = [0; 512];
+                stream.read(&mut buf).unwrap();
+                // Send a response
                 stream.write("+PONG\r\n".as_bytes()).unwrap();
+                }
             }
             Err(e) => {
                 println!("error: {}", e);
